@@ -31,10 +31,23 @@ function Home(){
 
 
 
-    const handleSearch=(e)=>{
+    const handleSearch= async (e)=>{
             e.preventDefault()
-            alert(searchQuery)
-            setSearchQuery('-----------')           // we called and updatee the state so ---- will show on the input
+            if(!searchQuery.trim()) return
+            if(loading) return
+
+            setLoading(true)
+            try {
+                const searchResult=await searchMovies(searchQuery)
+                setMovies(searchResult)
+                setError(false)
+            } catch (error) {
+                console.log(error)
+                setError("Failed to Search movie")
+                
+            }finally{
+                setLoading(false)
+            }
     }
 
 
@@ -50,16 +63,15 @@ function Home(){
             <button type="submit" className="search-button">search</button>
         </form>
 
-
-
-        <div className="movies-grid">
-            {movies.map((movie) => 
-                    //   movie.title.toLocaleLowerCase().startsWith(searchQuery) && 
-
-
-              <MovieCard movie={movie} key={movie.id} />
+        {error && <div className="error-message">{error}</div>}     
+        {loading ?(
+            <div className="loading">Loading...</div>)
+            :(
+             <div className="movies-grid">
+                    {movies.map((movie) => 
+                                          <MovieCard movie={movie} key={movie.id} />
             )}
-        </div>
+        </div>)}
     </div>
     )
 }

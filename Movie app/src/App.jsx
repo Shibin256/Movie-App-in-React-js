@@ -2,12 +2,13 @@
 import './css/App.css'
 import Home from './pages/Home'
 import { Routes, Route } from 'react-router-dom';
-import Favorite from './pages/favorite';
+import Favorite from './pages/Favorite';
 import Navbar from './Component/Navbar';
+import { movieProvider } from './Context/MovieContext';
 
 function App() {      //in here App is the component
   return (
-    <div>
+    <movieProvider>
       <Navbar />
         <main className='Main-Content'>
         <Routes>
@@ -15,7 +16,7 @@ function App() {      //in here App is the component
           <Route path='/favorite' element={<Favorite />} />
         </Routes>
    </main>
-   </div>
+   </movieProvider>
   );
 }
 
